@@ -1,25 +1,27 @@
 name: Test Product
 
 on:
- workflow_dispatch:
-   
- push:
+  workflow_dispatch:
+  push:
     branches:
       - main
+
+env:
+  product_id: ''
 
 jobs:
   test_product:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set Product ID
-      run: echo "PRODUCT_ID=B0BSNQ2KXF" >> $GITHUB_ENV
+      - name: Set Product ID
+        run: echo "PRODUCT_ID=${{ env.product_id }}" >> $GITHUB_ENV
 
-    - name: Run Selenium Tests
-      run: |
-        export PRODUCT_ID=$PRODUCT_ID
-        cd Amazon_Product_Validation
-        mvn test
+      - name: Run Selenium Tests
+        run: |
+          export PRODUCT_ID=$PRODUCT_ID
+          cd Amazon_Product_Validation
+          mvn test
