@@ -2,12 +2,14 @@ name: Test Product
 
 on:
   workflow_dispatch:
+    inputs:
+      product_id:
+        description: 'The ID of the product to test'
+        required: true
+        
   push:
     branches:
       - main
-
-env:
-  product_id: ''
 
 jobs:
   test_product:
@@ -18,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set Product ID
-        run: echo "PRODUCT_ID=${{ env.product_id }}" >> $GITHUB_ENV
+        run: echo "PRODUCT_ID=${{ inputs.product_id }}" >> $GITHUB_ENV
 
       - name: Run Selenium Tests
         run: |
