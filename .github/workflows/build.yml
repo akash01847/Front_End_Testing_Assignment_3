@@ -19,4 +19,5 @@ jobs:
     - name: Run Selenium Tests
       run: |
         export PRODUCT_ID=$PRODUCT_ID
+        cd Amazon_Product_Validation
         mvn test
