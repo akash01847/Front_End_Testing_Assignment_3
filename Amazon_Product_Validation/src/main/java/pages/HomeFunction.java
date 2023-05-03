@@ -61,6 +61,9 @@ public class HomeFunction {
 
     @FindBy(css = "div[class=\"a-section vsx__offers multipleProducts\"]")
     WebElement offerContainer;
+    
+    @FindBy(css = "div[class=\"a-section a-spacing-base\"]")
+    WebElement plpTile;
 
     By ratingNumber = By.cssSelector("div[id='averageCustomerReviews_feature_div'] span[class='a-size-base a-color-base']");
 
