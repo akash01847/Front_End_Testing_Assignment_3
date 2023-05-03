@@ -78,27 +78,15 @@ public class HomeFunction {
         }
     }
 
-//     public boolean textToSearch() throws NoSuchElementException, IOException {
-//         try {
-//             wait.until(ExpectedConditions.visibilityOf(searchBar));
-            
-//             searchBar.sendKeys(base.loadProperties("productID"));
-//             searchButton.click();
-//             return true;
-//         } catch (NoSuchElementException | IOException e) {
-//             captureScreenshot("textToSearch");
-//             return false;
-//         }
-//     }
-    
-     public boolean textToSearch() throws NoSuchElementException, IOException {
+
+    public boolean textToSearch() throws NoSuchElementException, IOException {
         try {
             wait.until(ExpectedConditions.visibilityOf(searchBar));
             String productId = System.getenv("PRODUCT_ID");
             searchBar.sendKeys(productId);
             searchButton.click();
             return true;
-        } catch (NoSuchElementException | IOException e) {
+        } catch (NoSuchElementException e) {
             captureScreenshot("textToSearch");
             return false;
         }
