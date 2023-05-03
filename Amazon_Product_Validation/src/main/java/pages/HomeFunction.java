@@ -94,10 +94,8 @@ public class HomeFunction {
 
     public boolean navigateToProductPage() throws TimeoutException, IOException {
         try {
-            wait.until(ExpectedConditions.visibilityOf(searchResult));
-            searchResult.click();
-            if (Objects.equals(base.loadProperties("productPrice"), productRate.getText())) {
-                System.out.println("On Product Page");
+                wait.until(ExpectedConditions.visibilityOfAllElements(plpTile));
+                plpTile.click();
                 return true;
             } else {
                 return false;
