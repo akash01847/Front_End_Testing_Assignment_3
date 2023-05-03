@@ -1,20 +1,22 @@
-name: Build
+name: Test Product
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
 jobs:
-  build:
+  test_product:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Set product ID
-        run: echo "::set-env name=PRODUCT_ID::B0BSNQ2KXF"
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Build app
-        run: |
-          npm install
-          npm run build
+    - name: Set Product ID
+      run: echo "PRODUCT_ID=B0BSNQ2KXF" >> $GITHUB_ENV
+
+    - name: Run Selenium Tests
+      run: |
+        export PRODUCT_ID=$PRODUCT_ID
+        mvn test
