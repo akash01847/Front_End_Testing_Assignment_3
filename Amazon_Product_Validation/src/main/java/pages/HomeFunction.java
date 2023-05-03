@@ -94,12 +94,9 @@ public class HomeFunction {
 
     public boolean navigateToProductPage() throws TimeoutException, IOException {
         try {
-                wait.until(ExpectedConditions.visibilityOfAllElements(plpTile));
-                plpTile.click();
-                return true;
-            } else {
-                return false;
-            }
+            wait.until(ExpectedConditions.visibilityOfAllElements(plpTile));
+            plpTile.click();
+            return true;
         } catch (TimeoutException e) {
             captureScreenshot("navigateToProductPage");
             throw e;
@@ -117,7 +114,6 @@ public class HomeFunction {
     }
 
     public boolean checkCustomerRatings() throws AssertionError, IOException, NoSuchElementException {
-        // Store the current window handle
         String currentHandle = driver.getWindowHandle();
         wait.until(ExpectedConditions.numberOfWindowsToBe(2));
         for (String handle : driver.getWindowHandles()) {
