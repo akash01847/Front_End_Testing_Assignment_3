@@ -141,7 +141,6 @@ public class HomeFunction {
     public boolean offerDetails() {
         try {
             newWindow(driver);
-//            wait.until(ExpectedConditions.visibilityOf(offerHeading));
             List<WebElement> offerText = offerBox.findElements(byOfferContainer);
             for (WebElement offer : offerText) {
                 log.info(offer.getText());
