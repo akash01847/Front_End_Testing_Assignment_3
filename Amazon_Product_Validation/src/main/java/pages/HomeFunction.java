@@ -8,14 +8,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import resources.Base;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import static Util.Log.log;
 
 public class HomeFunction {
@@ -27,7 +25,6 @@ public class HomeFunction {
     Actions actions;
 
     Base base;
-
 
     public HomeFunction(WebDriver driver) {
         this.driver = driver;
@@ -48,8 +45,6 @@ public class HomeFunction {
     WebElement plpTile;
     @FindBy(id = "buy-now-button")
     WebElement buyNowButton;
-    @FindBy(css = ".vsx__headings")
-    WebElement offerHeading;
     @FindBy(css = "div[id=\"vsxoffers_feature_div\"] div.a-carousel-viewport")
     WebElement offerBox;
     By byOfferContainer = By.cssSelector("div.a-cardui-body li.a-carousel-card");
