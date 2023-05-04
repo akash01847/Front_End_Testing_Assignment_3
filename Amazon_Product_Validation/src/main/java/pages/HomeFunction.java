@@ -1,5 +1,6 @@
 package pages;
 
+import Util.Log;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -15,6 +16,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
+
+import static Util.Log.log;
 
 public class HomeFunction {
 
@@ -50,24 +54,38 @@ public class HomeFunction {
     @FindBy(xpath = "//span[normalize-space()='39,999']")
     WebElement productRate;
 
+    @FindBy(css = "div[class='a-section a-spacing-base']")
+    WebElement plpTile;
+
     @FindBy(xpath = "//span[normalize-space()='OnePlus 11R 5G (Galactic Silver, 8GB RAM, 128GB Storage)']")
     WebElement searchResult;
 
-    @FindBy(css = "input[id=\"buy-now-button\"]")
+    @FindBy(id = "buy-now-button")
     WebElement buyNowButton;
 
     @FindBy(xpath = "//td[@class='a-size-base']")
     WebElement customerRatings;
-
-    @FindBy(css = "div[class=\"a-section vsx__offers multipleProducts\"]")
+    @FindBy(css = "div[class=\"a-section a-spacing-mini vsx__headings\"]")
+    WebElement offerHeading;
+    @FindBy(css="div[id='anonCarousel1']")
     WebElement offerContainer;
-    
-    @FindBy(css = "div[class='a-section a-spacing-base']")
-    WebElement plpTile;
-
     By ratingNumber = By.cssSelector("div[id='averageCustomerReviews_feature_div'] span[class='a-size-base a-color-base']");
 
-    public void captureScreenshot(String functionName) throws IOException {
+    @FindBy(css = "a[id=\"breadcrumb-back-link\"]")
+    WebElement backToResult;
+
+    public void newWindow(WebDriver driver) {
+        String currentWindowHandle = driver.getWindowHandle();
+        Set<String> allWindowHandles = driver.getWindowHandles();
+        for (String handle : allWindowHandles) {
+            if (!handle.equals(currentWindowHandle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+    }
+
+    public void captureScreenshot(String functionName) {
         try {
             File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
@@ -81,12 +99,11 @@ public class HomeFunction {
         }
     }
 
-
     public boolean textToSearch() throws NoSuchElementException, IOException {
         try {
             wait.until(ExpectedConditions.visibilityOf(searchBar));
-            String productId = System.getenv("PRODUCT_ID");
-            searchBar.sendKeys(productId);
+//            String productId = System.getenv("PRODUCT_ID");
+            searchBar.sendKeys(base.loadProperties("productID"));
             searchButton.click();
             return true;
         } catch (NoSuchElementException e) {
@@ -99,58 +116,54 @@ public class HomeFunction {
         try {
             wait.until(ExpectedConditions.visibilityOfAllElements(plpTile));
             plpTile.click();
+            log.info("Clicked Plp");
             return true;
         } catch (TimeoutException e) {
+            log.info("Plp not found");
             captureScreenshot("navigateToProductPage");
             throw e;
         }
     }
 
-    public boolean validateBuyNowButton() throws TimeoutException, IOException {
+    public boolean validateBuyNowButton() throws TimeoutException {
         try {
-            wait.until(ExpectedConditions.visibilityOf(standardIdentificationNumber));
-            return buyNowButton.isDisplayed();
-        } catch (TimeoutException e) {
+                newWindow(driver);
+                wait.until(ExpectedConditions.visibilityOf(buyNowButton));
+                buyNowButton.isDisplayed();
+                log.info("Buy Now Button Validated");
+                return true;
+            } catch (TimeoutException e) {
+            log.info("Buy Now Button Not Visible");
             captureScreenshot("validateBuyNowButton");
-            return true;
         }
+        return false;
     }
 
-    public void checkCustomerRatings() throws AssertionError, IOException, NoSuchElementException {
-        String currentHandle = driver.getWindowHandle();
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
-        for (String handle : driver.getWindowHandles()) {
-            if (!handle.equals(currentHandle)) {
-                driver.switchTo().window(handle);
-                break;
-            }
-        }
-        wait.until(ExpectedConditions.visibilityOf(stockStatus));
-        customerRatings.isDisplayed();
+
+    public void checkCustomerRatings() throws AssertionError, NoSuchElementException {
+        newWindow(driver);
+        wait.until(ExpectedConditions.visibilityOf(offerHeading));
         WebElement ratingElement = driver.findElement(ratingNumber);
         String ratingText = ratingElement.getAttribute("innerHTML");
         double ratingValue = Double.parseDouble(ratingText.replaceAll("[^0-9.]", ""));
-        System.out.println("Customer rating: " + ratingValue);
+        log.info("Customer rating: " + ratingValue);
         if (ratingValue >= 4.0) {
-            System.out.println("Product rating is greater than 4.");
+            log.info("Product rating is greater than 4.");
         } else {
-            System.out.println("Product rating is less than 4.");
+            log.info("Product rating is less than 4.");
             captureScreenshot("checkCustomerRatings");
         }
     }
 
-    public boolean offerDetails() throws IOException {
+    public boolean offerDetails() {
         try {
+            newWindow(driver);
             wait.until(ExpectedConditions.visibilityOf(offerContainer));
-            List<WebElement> offerElements = offerContainer.findElements(By.cssSelector("li[class=\"a-carousel-card\"]"));
-            System.out.println("Found " + offerElements.size() + " offer elements");
-            for (WebElement offerElement : offerElements) {
-                System.out.println(offerElement.getText());
-            }
-            return offerContainer.isDisplayed();
+            Log.info(offerContainer.getText());
+            return true;
         } catch (Exception e) {
             captureScreenshot("offerDetails");
-            return true;
+            throw e;
         }
     }
 }
