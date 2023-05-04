@@ -116,7 +116,7 @@ public class HomeFunction {
         }
     }
 
-    public boolean checkCustomerRatings() throws AssertionError, IOException, NoSuchElementException {
+    public void checkCustomerRatings() throws AssertionError, IOException, NoSuchElementException {
         String currentHandle = driver.getWindowHandle();
         wait.until(ExpectedConditions.numberOfWindowsToBe(2));
         for (String handle : driver.getWindowHandles()) {
@@ -133,11 +133,9 @@ public class HomeFunction {
         System.out.println("Customer rating: " + ratingValue);
         if (ratingValue >= 4.0) {
             System.out.println("Product rating is greater than 4.");
-            return true;
         } else {
             System.out.println("Product rating is less than 4.");
             captureScreenshot("checkCustomerRatings");
-            return false;
         }
     }
 
