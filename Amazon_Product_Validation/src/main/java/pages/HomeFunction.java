@@ -22,7 +22,7 @@ public class HomeFunction {
     WebDriverWait wait;
     Actions actions;
     Base base;
-    
+
     @FindBy(css = "input[id=\"twotabsearchtextbox\"]")
     WebElement searchBar;
     @FindBy(css = "input[id=\"nav-search-submit-button\"]")
@@ -38,7 +38,7 @@ public class HomeFunction {
     WebElement offerBox;
     By byOfferContainer = By.cssSelector("div.a-cardui-body li.a-carousel-card");
     By ratingNumber = By.cssSelector("div[id='averageCustomerReviews_feature_div'] span[class='a-size-base a-color-base']");
-    
+
     public HomeFunction(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -79,7 +79,7 @@ public class HomeFunction {
             searchBar.sendKeys(productId);
             searchButton.click();
             return true;
-        } catch (IOException e) {
+        } catch (NoSuchElementException e) {
             captureScreenshot("textToSearch");
             return false;
         }
