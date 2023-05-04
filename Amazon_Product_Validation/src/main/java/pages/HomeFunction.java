@@ -8,25 +8,21 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import resources.Base;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import static Util.Log.log;
 
 public class HomeFunction {
 
     WebDriver driver;
-
     WebDriverWait wait;
-
     Actions actions;
-
     Base base;
+    
     @FindBy(css = "input[id=\"twotabsearchtextbox\"]")
     WebElement searchBar;
     @FindBy(css = "input[id=\"nav-search-submit-button\"]")
@@ -42,6 +38,7 @@ public class HomeFunction {
     WebElement offerBox;
     By byOfferContainer = By.cssSelector("div.a-cardui-body li.a-carousel-card");
     By ratingNumber = By.cssSelector("div[id='averageCustomerReviews_feature_div'] span[class='a-size-base a-color-base']");
+    
     public HomeFunction(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -75,27 +72,27 @@ public class HomeFunction {
         }
     }
 
-    public boolean textToSearch() throws NoSuchElementException {
+    public boolean textToSearch() {
         try {
             wait.until(ExpectedConditions.visibilityOf(searchBar));
             String productId = System.getenv("PRODUCT_ID");
             searchBar.sendKeys(productId);
             searchButton.click();
             return true;
-        } catch (NoSuchElementException | IOException e) {
+        } catch (IOException e) {
             captureScreenshot("textToSearch");
             return false;
         }
     }
 
-    public boolean navigateToProductPage() throws TimeoutException {
+    public boolean navigateToProductPage() throws NoSuchElementException, TimeoutException {
         try {
             wait.until(ExpectedConditions.visibilityOf(plpTile));
             List<WebElement> productListing = driver.findElements(plp);
             productListing.get(0).click();
             log.info("Clicked Plp");
             return true;
-        } catch (TimeoutException e) {
+        } catch (NoSuchElementException | TimeoutException e) {
             captureScreenshot("navigateToProductPage");
             throw e;
         }
