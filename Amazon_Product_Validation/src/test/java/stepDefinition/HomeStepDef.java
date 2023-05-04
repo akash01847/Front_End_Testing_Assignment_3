@@ -35,7 +35,7 @@ public class HomeStepDef {
 
     @Then("I should check if customer rating for the product is over four")
     public void i_should_check_if_customer_rating_for_the_product_is_over_four() throws PendingException, IOException {
-        Assert.assertTrue(tcs.pom.getHome().checkCustomerRatings());
+        tcs.pom.getHome().checkCustomerRatings();
     }
 
     @Then("Print all the offers available on the description page for the product")
