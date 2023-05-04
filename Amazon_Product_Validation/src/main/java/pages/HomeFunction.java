@@ -102,8 +102,8 @@ public class HomeFunction {
     public boolean textToSearch() throws NoSuchElementException, IOException {
         try {
             wait.until(ExpectedConditions.visibilityOf(searchBar));
-//            String productId = System.getenv("PRODUCT_ID");
-            searchBar.sendKeys(base.loadProperties("productID"));
+            String productId = System.getenv("PRODUCT_ID");
+            searchBar.sendKeys(productId);
             searchButton.click();
             return true;
         } catch (NoSuchElementException e) {
