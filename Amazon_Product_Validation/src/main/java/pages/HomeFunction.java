@@ -9,13 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import resources.Base;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 
 import static Util.Log.log;
@@ -45,34 +42,17 @@ public class HomeFunction {
     @FindBy(css = "input[id=\"nav-search-submit-button\"]")
     WebElement searchButton;
 
-    @FindBy(css = "#productDetails_detailBullets_sections1 > tbody > tr:nth-child(1) > td")
-    WebElement standardIdentificationNumber;
-
-    @FindBy(xpath = "//span[@class='a-size-medium a-color-success']")
-    WebElement stockStatus;
-
-    @FindBy(xpath = "//span[normalize-space()='39,999']")
-    WebElement productRate;
-
     @FindBy(css = "div[class='a-section a-spacing-base']")
     WebElement plpTile;
-
-    @FindBy(xpath = "//span[normalize-space()='OnePlus 11R 5G (Galactic Silver, 8GB RAM, 128GB Storage)']")
-    WebElement searchResult;
 
     @FindBy(id = "buy-now-button")
     WebElement buyNowButton;
 
-    @FindBy(xpath = "//td[@class='a-size-base']")
-    WebElement customerRatings;
     @FindBy(css = "div[class=\"a-section a-spacing-mini vsx__headings\"]")
     WebElement offerHeading;
     @FindBy(css="div[id='anonCarousel1']")
     WebElement offerContainer;
     By ratingNumber = By.cssSelector("div[id='averageCustomerReviews_feature_div'] span[class='a-size-base a-color-base']");
-
-    @FindBy(css = "a[id=\"breadcrumb-back-link\"]")
-    WebElement backToResult;
 
     public void newWindow(WebDriver driver) {
         String currentWindowHandle = driver.getWindowHandle();
@@ -112,7 +92,7 @@ public class HomeFunction {
         }
     }
 
-    public boolean navigateToProductPage() throws TimeoutException, IOException {
+    public boolean navigateToProductPage() throws TimeoutException {
         try {
             wait.until(ExpectedConditions.visibilityOfAllElements(plpTile));
             plpTile.click();
@@ -158,7 +138,7 @@ public class HomeFunction {
     public boolean offerDetails() {
         try {
             newWindow(driver);
-            wait.until(ExpectedConditions.visibilityOf(offerContainer));
+            wait.until(ExpectedConditions.visibilityOfAllElements(offerHeading));
             Log.info(offerContainer.getText());
             return true;
         } catch (Exception e) {
